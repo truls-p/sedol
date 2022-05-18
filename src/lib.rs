@@ -44,7 +44,7 @@ pub fn clean(sedol: &str) -> String {
 }
 
 /// Check if the SEDOL is valid.
-/// 
+///
 /// We do the checks in the following order:
 /// 1. only digits 0-9 and letters B-Z (excluding vowels) are present
 /// 2. the length of the string is 7
@@ -145,5 +145,41 @@ mod tests {
             }),
             validate(&clean("BD-9MZ-Z6??!!  "))
         );
+    }
+
+    #[test]
+    fn test_error_format() {
+        let invalid_sedol_string = "BD9MZZ6";
+        match validate(invalid_sedol_string) {
+            Err(e) => assert_eq!("invalid check digit 6, expected 7", format!("{}",e)),
+            _ => panic!(),
+        }
+    }
+
+    #[test]
+    fn test_error_format_invalid_old() {
+        let invalid_sedol_string = "0D9MZZ6";
+        match validate(invalid_sedol_string) {
+            Err(e) => assert_eq!("invalid format, expected all digits when first char is digit", format!("{}",e)),
+            _ => panic!(),
+        }
+    }
+
+    #[test]
+    fn test_error_format_invalid_length() {
+        let invalid_sedol_string = "0D9MZZ";
+        match validate(invalid_sedol_string) {
+            Err(e) => assert_eq!("invalid length, expected 7", format!("{}",e)),
+            _ => panic!(),
+        }
+    }
+
+    #[test]
+    fn test_error_format_invalid_char() {
+        let invalid_sedol_string = "!D9MZZ";
+        match validate(invalid_sedol_string) {
+            Err(e) => assert_eq!("invalid character !", format!("{}",e)),
+            _ => panic!(),
+        }
     }
 }
