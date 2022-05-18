@@ -1,4 +1,5 @@
 [![Crates.io](https://img.shields.io/crates/v/sedol.svg)](https://crates.io/crates/sedol)
+[![codecov](https://codecov.io/gh/truls-p/sedol/branch/main/graph/badge.svg)](https://codecov.io/gh/truls-p/sedol)
 [![Workflow Status](https://github.com/truls-p/sedol/workflows/main/badge.svg)](https://github.com/truls-p/sedol/actions?query=workflow%3A%22main%22)
 
 # sedol
