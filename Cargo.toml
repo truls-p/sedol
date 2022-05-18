@@ -2,6 +2,7 @@
 name = "sedol"
 version = "0.1.0"
 edition = "2021"
+description = "A crate to validate SEDOLs"
 repository = "https://github.com/truls-p/sedol"
 readme = "README.md"
 keywords = ["sedol","identifier", "finance", "equity", "stock"]
