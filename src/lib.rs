@@ -5,42 +5,37 @@
 //! <https://en.wikipedia.org/wiki/SEDOL>
 //!
 //! <https://www.lseg.com/markets-products-and-services/data-analytics/data-solutions/sedol/documentation>
-//! 
+//!
 //! # Examples
 //! ```
-//! use sedol;
-//!fn main() {
-//!    let sedol_string = "BD9MZZ7";
-//!    match sedol::validate(sedol_string) {
-//!        Ok(s) => println!("SEDOL validated: {}", s),
-//!        Err(e) => eprint!("{}", e),
-//!    }
-//!
-//!    let invalid_sedol_string = "BD9MZZ6";
-//!    match sedol::validate(invalid_sedol_string) {
-//!        Ok(s) => println!("SEDOL validated: {}", s),
-//!        Err(e) => eprintln!("{}", e),
-//!    }
-//!
-//!    let unclean_sedol_string = " BD9-MZ-Z7?";
-//!    match sedol::validate(&sedol::clean(unclean_sedol_string)) {
-//!        Ok(s) => println!("SEDOL validated: {}", s),
-//!        Err(e) => eprintln!("{}", e),
-//!    }
-//!
-//!    let sedol_6_string = "BD9MZZ";
-//!    println!("SEDOL with calculated check digit: {}{}", sedol_6_string, sedol::calc_check_digit(sedol_6_string));
+//!let sedol_string = "BD9MZZ7";
+//!match sedol::validate(sedol_string) {
+//!    Ok(s) => println!("SEDOL validated: {}", s),
+//!    Err(e) => eprint!("{}", e),
 //!}
+//!
+//!let invalid_sedol_string = "BD9MZZ6";
+//!match sedol::validate(invalid_sedol_string) {
+//!    Ok(s) => println!("SEDOL validated: {}", s),
+//!    Err(e) => eprintln!("{}", e),
+//!}
+//!
+//!let unclean_sedol_string = " BD9-MZ-Z7?";
+//!match sedol::validate(&sedol::clean(unclean_sedol_string)) {
+//!    Ok(s) => println!("SEDOL validated: {}", s),
+//!    Err(e) => eprintln!("{}", e),
+//!}
+//!
+//!let sedol_6_string = "BD9MZZ";
+//!println!("SEDOL with calculated check digit: {}{}", sedol_6_string, sedol::calc_check_digit(sedol_6_string));
 //! ```
 
 #![warn(missing_docs)]
-#![feature(test)]
-extern crate test;
 
 mod errors;
 pub use errors::SedolError;
 
-/// remove whitespace and special characters
+/// Remove all characters except is_ascii_alphabetic and is_ascii_digit
 pub fn clean(sedol: &str) -> String {
     sedol.replace(
         |x: char| !x.is_ascii_alphabetic() && !x.is_ascii_digit(),
@@ -49,6 +44,7 @@ pub fn clean(sedol: &str) -> String {
 }
 
 /// Check if the SEDOL is valid.
+/// 
 /// We do the checks in the following order:
 /// 1. only digits 0-9 and letters B-Z (excluding vowels) are present
 /// 2. the length of the string is 7
@@ -95,7 +91,6 @@ pub fn calc_check_digit(sedol: &str) -> char {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use test::Bencher;
 
     #[test]
     fn invalid_character() {
@@ -150,10 +145,5 @@ mod tests {
             }),
             validate(&clean("BD-9MZ-Z6??!!  "))
         );
-    }
-
-    #[bench]
-    fn bench_validate(b: &mut Bencher) {
-        b.iter(|| validate("B15KXQ8").unwrap());
     }
 }
