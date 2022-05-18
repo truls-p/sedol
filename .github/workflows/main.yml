@@ -24,9 +24,7 @@ jobs:
       uses: actions-rs/tarpaulin@v0.1
       with:
         version: '0.15.0'
-        args: 
-          - '--ignore--tests'
-          - '-- --test-threads 1'
+        args: '--ignore-tests -- --test-threads 1'
     - name: Codecov
       uses: codecov/codecov-action@v3.1.0
       with:
